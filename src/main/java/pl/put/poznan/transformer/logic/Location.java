@@ -1,6 +1,6 @@
 package pl.put.poznan.transformer.logic;
 
-public class Location {
+public class Location {//Component in Composite pattern
     public Integer getId() {
         return id;
     }

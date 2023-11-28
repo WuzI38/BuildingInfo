@@ -2,7 +2,7 @@ package pl.put.poznan.transformer.logic;
 
 import java.util.ArrayList;
 
-public class Space extends Location {
+public class Space extends Location {//building or floor Composite
     public Space(Integer id, String name) {
         this.id = id;
         this.name = name;
@@ -16,5 +16,5 @@ public class Space extends Location {
         this.locations = locations;
     }
 
-    ArrayList<Location> locations;
+    private ArrayList<Location> locations;
 }
