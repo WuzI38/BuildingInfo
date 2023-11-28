@@ -1,0 +1,22 @@
+{
+  "id": 2,
+  "name": "Lokacja B",
+  "locations": [
+    {
+      "id": 6,
+      "name": "Podlokacja B1",
+      "area": 35.0,
+      "cube": 25.5,
+      "heating": 20.0,
+      "light": 90.0
+    },
+    {
+      "id": 7,
+      "name": "Podlokacja B2",
+      "area": 40.8,
+      "cube": 19.7,
+      "heating": 16.5,
+      "light": 85.0
+    }
+  ]
+}
