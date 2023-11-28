@@ -1,0 +1,58 @@
+{
+  "locations": [
+    {
+      "id": 1,
+      "name": "Lokacja A",
+      "locations": [
+        {
+          "id": 4,
+          "name": "Podlokacja A1",
+          "area": 20.0,
+          "cube": 15.2,
+          "heating": 10.0,
+          "light": 75.0
+        },
+        {
+          "id": 5,
+          "name": "Podlokacja A2",
+          "area": 30.2,
+          "cube": 18.5,
+          "heating": 15.2,
+          "light": 80.0
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Lokacja B",
+      "locations": [
+        {
+          "id": 6,
+          "name": "Podlokacja B1",
+          "area": 35.0,
+          "cube": 25.5,
+          "heating": 20.0,
+          "light": 90.0
+        },
+        {
+          "id": 7,
+          "name": "Podlokacja B2",
+          "area": 40.8,
+          "cube": 19.7,
+          "heating": 16.5,
+          "light": 85.0
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Podlokacja C2",
+      "area": 21.5,
+      "cube": 8.3,
+      "heating": 7.3,
+      "light": 65.0
+    }
+  ],
+  "id": 123,
+  "name": "Budynek"
+}

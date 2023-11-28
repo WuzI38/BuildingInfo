@@ -25,15 +25,58 @@ public class TextTransformer {
         // of course, normally it would do something based on the transforms
 
         //test how parsing works (overwrites input text)
-        text = readFile("src/main/resources/test.json");
+        text = readFile("src/main/resources/testGood.json");
         try {
             text = prettyPrintJson(text);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        Space space = parseJSON(text);
+        Space space = null;
+        if(validateJSON(text, 3)){
+            space = parseJSON(text);
+        }
+        else
+            text = "bad json format";
 
         return text.toUpperCase();
+    }
+
+    private boolean validateJSON(String text, Integer depth) {//checks if format of json is correct
+        //depth - depth of structure
+        if(depth < 2) return false;//has to be space
+        JSONObject mainSpaceObj = new JSONObject(text);//main object in json - it should be building in our structure
+
+        //check attributes
+        if(!mainSpaceObj.has("id"))//id is required
+            return false;
+        if(!mainSpaceObj.has("locations"))
+            return false;
+        else {
+            JSONArray ja = mainSpaceObj.getJSONArray("locations");
+            return validateLevel(ja, depth - 1);
+        }
+    }
+
+    private boolean validateLevel(JSONArray ja, Integer depth) {
+        if(ja == null) return false;
+        for (int i = 0; i<ja.length(); i++) {
+            JSONObject obj = ja.getJSONObject(i);
+            if(!obj.has("id"))//id is required
+                return false;
+            if(depth > 1){//space
+                if(obj.has("locations")){//only Spaces are on higher levels
+                    JSONArray newJA = obj.getJSONArray("locations");
+                    if(!validateLevel(newJA,depth-1))
+                        return false;
+                } else return false;
+            } else {//room
+                if(!obj.has("area") || !obj.has("cube") || //has all needed attributes
+                        !obj.has("heating") || !obj.has("light") ||
+                        obj.has("locations"))//does not have more locations
+                    return false;//only Rooms are on higher levels
+            }
+        }
+        return true;
     }
 
     public String readFile(String filename){//for reading json file
@@ -52,7 +95,7 @@ public class TextTransformer {
         return json;
     }
 
-    public Space parseJSON(String json){//we parse json to objects (check test*.json in resources for sample json files)
+    private Space parseJSON(String json){//we parse json to objects (check test*.json in resources for sample json files)
         JSONObject mainSpaceObj = new JSONObject(json);//main object in json - it should be building in our structure
         JSONArray ja = mainSpaceObj.getJSONArray("locations");
 
@@ -66,20 +109,8 @@ public class TextTransformer {
     }
 
 
-    public ArrayList<Location> getLocations(JSONArray ja){//recursive function
+    private ArrayList<Location> getLocations(JSONArray ja){//recursive function
         ArrayList<Location> list = new ArrayList<Location>();
-
-        //possible validation
-        int l = 0;
-        for (int i = 0; i<ja.length(); i++) {
-            JSONObject obj = ja.getJSONObject(i);
-            if (obj.has("locations")) {
-                l++;
-            }
-        }
-        if(l!=ja.length() || l!=0){//space has rooms and other spaces -> BAD json structure
-            //TODO
-        }
 
         for (int i = 0; i<ja.length(); i++){
             JSONObject obj = ja.getJSONObject(i);
