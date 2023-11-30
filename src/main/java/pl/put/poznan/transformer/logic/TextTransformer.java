@@ -29,7 +29,7 @@ public class TextTransformer {
 
         Location location = generateLocation(text);
 
-        return Adder.calculate(location, name, param);
+        return Adder.calculate(location, param);
     }
 
     public String getText(String path) {

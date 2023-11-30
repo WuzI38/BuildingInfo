@@ -18,7 +18,7 @@ public class Room extends Location {
     }
 
     public Float getHeating() {
-        return heating;
+        return this.heating / this.cube;
     }
 
     public void setHeating(Float heating) {
@@ -26,7 +26,7 @@ public class Room extends Location {
     }
 
     public Float getLight() {
-        return light;
+        return this.light / this.area;
     }
 
     public void setLight(Float light) {

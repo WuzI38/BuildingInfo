@@ -10,17 +10,8 @@ public class TextTransformerApplication {
 
     public static void main(String[] args) {
         TextTransformer tt = new TextTransformer();
-        tt.getParam("src/main/resources/testGood.json", "Budynek", "light");
+        System.out.println(tt.getParam("src/main/resources/testGood.json", "Budynek", "area"));
 
         // SpringApplication.run(TextTransformerApplication.class, args);
     }
 }
-
-/*
-
-"name": "Podlokacja A1",
-          "area": 20.0,
-          "cube": 15.2,
-          "heating": 10.0,
-          "light":
- */
