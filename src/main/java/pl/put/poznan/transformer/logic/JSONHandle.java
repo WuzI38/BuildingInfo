@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class JSONHandle {
-    public static String readFile(String filename){//for reading json file
+    public static String readFile(String filename) {//for reading json file
         File myObj = new File(filename);
         Scanner myReader = null;
         StringBuilder json = new StringBuilder();

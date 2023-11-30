@@ -1,6 +1,7 @@
 package pl.put.poznan.transformer.logic;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Space extends Location {//building or floor Composite
     public Space(Integer id, String name) {

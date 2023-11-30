@@ -1,4 +1,6 @@
 {
+  "id": 123,
+  "name": "Budynek",
   "locations": [
     {
       "id": 1,
@@ -66,7 +68,5 @@
         }
       ]
     }
-  ],
-  "id": 123,
-  "name": "Budynek"
+  ]
 }

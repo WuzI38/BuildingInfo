@@ -1,26 +1,40 @@
 package pl.put.poznan.transformer.calculation;
 
-import pl.put.poznan.transformer.logic.Location;
-import pl.put.poznan.transformer.logic.Room;
-import pl.put.poznan.transformer.logic.Space;
+import pl.put.poznan.transformer.logic.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public final class Adder {
     // Returns sum of area, cube, light/area or heating/cube
-    public static float calculate(Location location, String param) {
-        float sum = 0;
-        if (location instanceof Room) {
-            sum = getSingleParam((Room)location, param);
+    public static float calculate(Location location, String name, String param) {
+        Space space = (Space) location;
+
+        ArrayList<Location> locations = space.getLocations();
+        // If location is a building
+        if (Objects.equals(space.getName(), name)) {
+            return calculateLocations(locations, param);
         }
-        else {
-            Space space = (Space) location;
-            ArrayList<Location> loc = space.getLocations();
-            sum += calculateLocations(loc, param);
+
+        // For each floor in the building
+        for (Location subLoc: locations) {
+            // If location is a floor
+            if (Objects.equals(subLoc.getName(), name)) {
+                ArrayList<Location> l2 = new ArrayList<>(){{add(subLoc);}};
+                return calculateLocations(l2, param);
+            }
+            // For each room on the floor
+            for (Location room: ((Space)subLoc).getLocations()) {
+                // If location is a room
+                if (Objects.equals(room.getName(), name)) {
+                    return getSingleParam((Room) room, param);
+                }
+            }
         }
-        return sum;
+        // If name not found
+        return -1;
     }
 
     // Invokes method using name param
@@ -44,6 +58,7 @@ public final class Adder {
         return result;
     }
 
+    // Recursive fun to calculate sum of desired param
     private static float calculateLocations(ArrayList<Location> locations, String param) {
         float sum = 0;
         for (Location location : locations) {
