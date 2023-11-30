@@ -10,35 +10,46 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import pl.put.poznan.transformer.calculation.Adder;
+
 /**
  * This is just an example to show that the logic should be outside the REST service.
  */
 public class TextTransformer {
 
-    private final String[] transforms;
+    /* private final String[] transforms;
 
     public TextTransformer(String[] transforms){
         this.transforms = transforms;
+    }*/
+
+    // I think this might be redundant
+    public float getParam(String path, String name, String param) {
+        String text = readFile(path);
+
+        Location location = generateLocation(text);
+
+        return Adder.calculate(location, name, param);
     }
 
-    public String transform(String text){
-        // of course, normally it would do something based on the transforms
+    public String getText(String path) {
+        return readFile(path).toUpperCase();
+    }
 
-        //test how parsing works (overwrites input text)
-        text = readFile("src/main/resources/testGood.json");
+    private Location generateLocation(String text) {
         try {
             text = prettyPrintJson(text);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        Space space = null;
+        Space space;
         if(validateJSON(text, 3)){
             space = parseJSON(text);
         }
-        else
-            text = "bad json format";
-
-        return text.toUpperCase();
+        else {
+            throw new RuntimeException("Invalid JSON object");
+        }
+        return space;
     }
 
     private boolean validateJSON(String text, Integer depth) {//checks if format of json is correct
@@ -82,17 +93,17 @@ public class TextTransformer {
     public String readFile(String filename){//for reading json file
         File myObj = new File(filename);
         Scanner myReader = null;
-        String json = "";
+        StringBuilder json = new StringBuilder();
         try {
             myReader = new Scanner(myObj);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
         while (myReader.hasNextLine()) {
-            json += myReader.nextLine();
+            json.append(myReader.nextLine());
         }
 
-        return json;
+        return json.toString();
     }
 
     private Space parseJSON(String json){//we parse json to objects (check test*.json in resources for sample json files)
@@ -142,7 +153,6 @@ public class TextTransformer {
         //return prettier string with json (normally it is all in one line)
         ObjectMapper objectMapper = new ObjectMapper();
         Object jsonObject = objectMapper.readValue(oneLineJSON, Object.class);
-        String prettyJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonObject);
-        return prettyJson;
+        return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonObject);
     }
 }
