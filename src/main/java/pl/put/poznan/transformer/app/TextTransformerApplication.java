@@ -5,13 +5,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import pl.put.poznan.transformer.logic.TextTransformer;
 
 
-@SpringBootApplication(scanBasePackages = {"pl.put.poznan.transformer.rest"})
+@SpringBootApplication(scanBasePackages = {"pl.put.poznan.transformer.rest", "pl.put.poznan.transformer.logic"})
 public class TextTransformerApplication {
 
     public static void main(String[] args) {
         TextTransformer tt = new TextTransformer();
-        System.out.println(tt.getParam("src/main/resources/testGood.json", "Podlokacja B2", "area"));
+        //System.out.println(tt.getParam("src/main/resources/testGood.json", "Podlokacja B2", "area"));
 
-        // SpringApplication.run(TextTransformerApplication.class, args);
+        SpringApplication.run(TextTransformerApplication.class, args);
     }
 }

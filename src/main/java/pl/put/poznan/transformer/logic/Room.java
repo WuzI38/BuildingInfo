@@ -1,5 +1,9 @@
 package pl.put.poznan.transformer.logic;
 
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+@JsonDeserialize
 public class Room extends Location {
     public Float getArea() {//Leaf in Composite pattern
         return area;

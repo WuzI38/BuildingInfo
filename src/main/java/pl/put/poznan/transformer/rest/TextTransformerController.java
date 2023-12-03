@@ -2,43 +2,33 @@ package pl.put.poznan.transformer.rest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+import pl.put.poznan.transformer.logic.Room;
+import pl.put.poznan.transformer.logic.Space;
 import pl.put.poznan.transformer.logic.TextTransformer;
 
 import java.util.Arrays;
 
+import static java.lang.String.valueOf;
+
 
 @RestController
-@RequestMapping("/{text}")
+@RequestMapping
 public class TextTransformerController {
 
     private static final Logger logger = LoggerFactory.getLogger(TextTransformerController.class);
 
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
-    public String get(@PathVariable String text,
-                              @RequestParam(value="transforms", defaultValue="upper,escape") String[] transforms) {
+
+
+    @RequestMapping(method = RequestMethod.POST, produces = "application/json", params = {"name","param"}, value = "/{id}")
+    public String post(@RequestBody Space space, @RequestParam(value = "name") String name,
+                       @RequestParam(value = "param") String param, @PathVariable String id) {
 
         // log the parameters
-        logger.debug(text);
-        logger.debug(Arrays.toString(transforms));
+        logger.debug(name);
+        logger.debug(param);
 
-        // perform the transformation, you should run your logic here, below is just a silly example
-        // TextTransformer transformer = new TextTransformer(transforms);
         TextTransformer transformer = new TextTransformer();
-        return transformer.getText(text);
-    }
-
-    @RequestMapping(method = RequestMethod.POST, produces = "application/json")
-    public String post(@PathVariable String text,
-                      @RequestBody String[] transforms) {
-
-        // log the parameters
-        logger.debug(text);
-        logger.debug(Arrays.toString(transforms));
-
-        // perform the transformation, you should run your logic here, below is just a silly example
-        // TextTransformer transformer = new TextTransformer(transforms);
-        TextTransformer transformer = new TextTransformer();
-        return transformer.getText(text);
+        return valueOf(transformer.getParam(space, name, param));
     }
 
 

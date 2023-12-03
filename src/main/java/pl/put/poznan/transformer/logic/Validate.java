@@ -3,45 +3,40 @@ package pl.put.poznan.transformer.logic;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class Validate {
-    public static boolean validateJSON(String text, Integer depth) {//checks if format of json is correct
+    public static boolean validateStructure(Location location, Integer depth) {//checks if format of json is correct
         //depth - depth of structure
-        if(depth < 2) return false;//has to be space
-        JSONObject mainSpaceObj = new JSONObject(text);//main object in json - it should be building in our structure
+        if(depth < 2 || location.getClass() == Room.class) return false;//has to be space
 
-        //check attributes
-        if(!mainSpaceObj.has("id"))//id is required
+        Space space = (Space) location;
+        if(space.getLocations() == null || space.getId() == null)
             return false;
+        ArrayList<Location> locations = space.getLocations();
 
-        if(!mainSpaceObj.has("locations"))
-            return false;
-
-        if(!mainSpaceObj.has("name"))
-            return false;
-
-        else {
-            JSONArray ja = mainSpaceObj.getJSONArray("locations");
-            return validateLevel(ja, depth - 1);
-        }
+        return validateLevel(locations, depth-1);
     }
 
-    public static boolean validateLevel(JSONArray ja, Integer depth) {
-        if(ja == null) return false;
-        for (int i = 0; i<ja.length(); i++) {
-            JSONObject obj = ja.getJSONObject(i);
-            if(!obj.has("id"))//id is required
-                return false;
-            if(depth > 1){//space
-                if(obj.has("locations")){//only Spaces are on higher levels
-                    JSONArray newJA = obj.getJSONArray("locations");
-                    if(!validateLevel(newJA,depth-1))
-                        return false;
+    public static boolean validateLevel(ArrayList<Location> locations, Integer depth) {
+
+        for (Location location : locations) {
+            if (location.getId() == null) return false;
+            if (depth > 1) {//space
+                if (location.getClass() == Space.class) {//only Spaces are on higher levels
+                    Space space = (Space) location;
+                    ArrayList<Location> nextLocations = space.getLocations();
+                    if (nextLocations != null)
+                        if (!validateLevel(nextLocations, depth - 1))
+                            return false;
                 } else return false;
             } else {//room
-                if(!obj.has("area") || !obj.has("cube") || //has all needed attributes
-                        !obj.has("heating") || !obj.has("light") ||
-                        obj.has("locations"))//does not have more locations
-                    return false;//only Rooms are on higher levels
+                if (location.getClass() == Room.class) {
+                    Room room = (Room) location;
+                    if (room.getArea() == null || room.getCube() == null || //has all needed attributes
+                            room.getHeating() == null || room.getLight() == null)
+                        return false;//only Rooms are on lowest level
+                } else return false;
             }
         }
         return true;

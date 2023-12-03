@@ -14,31 +14,15 @@ public class TextTransformer {
     }*/
 
     // I think this might be redundant
-    public float getParam(String path, String name, String param) {
-        String text = JSONHandle.readFile(path);
+    public float getParam(Location location, String name, String param) {
+        //String text = JSONHandle.readFile(path);
 
-        Location location = generateLocation(text);
+        //Location location = generateLocation(text);
+
+        if(!Validate.validateStructure(location,3)) return -1;
 
         return Adder.calculate(location, name, param);
     }
 
-    public String getText(String path) {
-        return JSONHandle.readFile(path);
-    }
 
-    public Location generateLocation(String text) {
-        try {
-            text = JSONHandle.prettyPrintJson(text);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        Space space;
-        if(Validate.validateJSON(text, 3)){
-            space = JSONHandle.parseJSON(text);
-        }
-        else {
-            throw new RuntimeException("Invalid JSON object");
-        }
-        return space;
-    }
 }

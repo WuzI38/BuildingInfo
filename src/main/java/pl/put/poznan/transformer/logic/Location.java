@@ -1,6 +1,9 @@
 package pl.put.poznan.transformer.logic;
 
-public class Location {//Component in Composite pattern
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+@JsonDeserialize(using = CustomDeserializer.class)
+public abstract class Location {//Component in Composite pattern
     public Integer getId() {
         return id;
     }
