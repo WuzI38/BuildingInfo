@@ -1,6 +1,5 @@
 package pl.put.poznan.transformer.logic;
 
-import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.ArrayList;
@@ -14,10 +13,6 @@ public class Space extends Location {//building or floor Composite
 
     public ArrayList<Location> getLocations() {
         return locations;
-    }
-
-    public void setLocations(ArrayList<Location> locations) {
-        this.locations = locations;
     }
 
     private ArrayList<Location> locations;

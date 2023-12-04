@@ -22,7 +22,7 @@ public class Validate {
 
         for (Location location : locations) {
             if (location.getId() == null) return false;
-            if (depth > 1) {//space
+            if (depth > 1) {//Space
                 if (location.getClass() == Space.class) {//only Spaces are on higher levels
                     Space space = (Space) location;
                     ArrayList<Location> nextLocations = space.getLocations();
@@ -30,7 +30,7 @@ public class Validate {
                         if (!validateLevel(nextLocations, depth - 1))
                             return false;
                 } else return false;
-            } else {//room
+            } else {//Room
                 if (location.getClass() == Room.class) {
                     Room room = (Room) location;
                     if (room.getArea() == null || room.getCube() == null || //has all needed attributes

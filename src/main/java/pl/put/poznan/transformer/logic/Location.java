@@ -20,8 +20,7 @@ public abstract class Location {//Component in Composite pattern
         this.name = name;
     }
 
-    Integer id = null;
-    String name = null;
+    protected Integer id = null;
 
-
+    protected String name = null;
 }
