@@ -7,8 +7,21 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Iterates through all the rooms to calculate the sum of area, cube, heating or lightning
+ * @version 1.0
+ */
 public final class Adder {
-    // Returns sum of area, cube, light/area or heating/cube
+    /**
+     * Calculates the sum of a specified parameter for a given location.
+     * This method searches through buildings, floors, and rooms to find the matching name
+     * and then calculates the sum of the specified parameter.
+     *
+     * @param location The top-level location to search within.
+     * @param name The name of the location to find.
+     * @param param The parameter to calculate the sum for.
+     * @return The sum of the specified parameter for the found location, or -1 if not found.
+     */
     public static float calculate(Location location, String name, String param) {
         Space space = (Space) location;
 
@@ -37,7 +50,14 @@ public final class Adder {
         return -1;
     }
 
-    // Invokes method using name param
+    /**
+     * Retrieves a single parameter value from a Room object using reflection.
+     * The method name is dynamically constructed based on the provided parameter name.
+     *
+     * @param obj The Room object from which to retrieve the parameter.
+     * @param name The name of the parameter to retrieve.
+     * @return The float value of the parameter, or 0 if an error occurs.
+     */
     private static float getSingleParam(Room obj, String name) {
         float result = 0;
         try {
@@ -58,7 +78,15 @@ public final class Adder {
         return result;
     }
 
-    // Recursive fun to calculate sum of desired param
+    /**
+     * Recursively calculates the sum of a specified parameter for a list of locations.
+     * This method handles both Room and Space objects, summing the parameter for Rooms
+     * and recursively calling itself for Spaces.
+     *
+     * @param locations The list of locations to calculate the sum for.
+     * @param param The parameter to calculate the sum for.
+     * @return The sum of the specified parameter for all locations in the list.
+     */
     private static float calculateLocations(ArrayList<Location> locations, String param) {
         float sum = 0;
         for (Location location : locations) {
