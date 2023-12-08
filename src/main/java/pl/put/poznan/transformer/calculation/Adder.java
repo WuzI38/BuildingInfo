@@ -1,5 +1,7 @@
 package pl.put.poznan.transformer.calculation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.put.poznan.transformer.logic.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -12,6 +14,9 @@ import java.util.Objects;
  * @version 1.0
  */
 public final class Adder {
+
+    private static final Logger logger = LoggerFactory.getLogger(Adder.class);
+
     /**
      * Calculates the sum of a specified parameter for a given location.
      * This method searches through buildings, floors, and rooms to find the matching name
@@ -23,6 +28,8 @@ public final class Adder {
      * @return The sum of the specified parameter for the found location, or -1 if not found.
      */
     public static float calculate(Location location, String name, String param) {
+        logger.debug("Processing to calculate {} of {}",param,name);
+
         Space space = (Space) location;
 
         ArrayList<Location> locations = space.getLocations();
@@ -69,10 +76,10 @@ public final class Adder {
             result = (float) method.invoke(obj);
         }
         catch (NoSuchMethodException e) {
-            System.out.println("Method not found: " + e.getMessage());
+            logger.info("Method not found: {}",e.getMessage());
         }
         catch (IllegalAccessException | InvocationTargetException e) {
-            System.out.println("Error invoking method: " + e.getMessage());
+            logger.info("Error invoking method: {}",e.getMessage());
         }
 
         return result;
@@ -90,6 +97,7 @@ public final class Adder {
     private static float calculateLocations(ArrayList<Location> locations, String param) {
         float sum = 0;
         for (Location location : locations) {
+            logger.debug("Processing location {}",location.getName());
             if (location instanceof Room) {
                 sum += getSingleParam((Room)location, param);
             }
