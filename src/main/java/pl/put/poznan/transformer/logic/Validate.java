@@ -1,5 +1,9 @@
 package pl.put.poznan.transformer.logic;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 import java.util.ArrayList;
 
 /**
@@ -8,6 +12,7 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class Validate {
+    private static final Logger logger = LoggerFactory.getLogger(Validate.class);
     /**
      * Validates the structure of the given location object to ensure it conforms to the expected format.
      * The method checks if the location is a Space and not a Room, and verifies that the depth is correct.
@@ -17,11 +22,17 @@ public class Validate {
      * @return true if the structure is valid, false otherwise.
      */
     public static boolean validateStructure(Location location, Integer depth) {
-        if(depth < 2 || location.getClass() == Room.class) return false; //has to be space
+        logger.debug("Validating structure {}",location.getName());
+        if(depth < 2 || location.getClass() == Room.class){
+            logger.debug("Structure {} is not Space",location.getName());
+            return false; //has to be space
+        }
 
         Space space = (Space) location;
-        if(space.getLocations() == null || space.getId() == null)
+        if(space.getLocations() == null || space.getId() == null){
+            logger.debug("Location {} is empty or has no ID",location.getName());
             return false;
+        }
         ArrayList<Location> locations = space.getLocations();
 
         return validateLevel(locations, depth-1);
@@ -56,6 +67,7 @@ public class Validate {
                 } else return false;
             }
         }
+        logger.debug("Structure validation succeed");
         return true;
     }
 }
