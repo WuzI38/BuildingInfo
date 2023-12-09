@@ -27,12 +27,11 @@ public class BuildingInfoController {
         BuildingInfo transformer = new BuildingInfo();
         float result = transformer.getParam(space, name, param);
 
-        switch ((int) result){//decide what response to give
-            case -1:
-                map.put("error","Wrong JSON structure");
-                break;
-            default:
-                map.put("result",result);
+        //decide what response to give
+        if ((int) result == -1) {
+            map.put("error", "Wrong JSON structure");
+        } else {
+            map.put("result", result);
         }
 
         return map;

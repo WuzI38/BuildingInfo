@@ -12,7 +12,7 @@ import java.io.IOException;
  * Custom deserializer for Location objects.
  * This class extends StdDeserializer to provide custom deserialization logic that
  * distinguishes between Space and Room objects from input JSON.
- * @version 1.0
+ * @version 1.2
  */
 public class CustomDeserializer extends StdDeserializer<Location> {//helps spring properly read json (distinguishes Space and Room objects from input JSON)
 
