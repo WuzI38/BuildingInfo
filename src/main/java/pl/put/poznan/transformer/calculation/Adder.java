@@ -11,7 +11,7 @@ import java.util.Objects;
 
 /**
  * Iterates through all the rooms to calculate the sum of area, cube, heating or lightning
- * @version 1.0
+ * @version 1.1
  */
 public final class Adder {
 
