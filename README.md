@@ -11,8 +11,8 @@ https://docs.google.com/spreadsheets/d/12U_DdNzxybBNd62lcBmuTMfIHWe-wBfjy8yGXYLH
 This project is built using Maven and requires both Java and Maven for setup. Here are some brief instructions on how to build the project. Please ensure all commands are executed in the project’s directory:
 
 - Run `mvn -v` to verify your Maven installation.
-- Run `maven clean install` to clean any remnants of the last build and install all required packages.
-- Run `maven package` to create a .jar file in the `target/` directory.
+- Run `mvn clean install` to clean any remnants of the last build and install all required packages.
+- Run `mvn package` to create a .jar file in the `target/` directory.
 
 ## Running the project
 The application can calculate the sum of a chosen parameter (specified by the `param` argument) for a room or building, as described in a JSON file. Here’s a quick guide on how to launch the application:
