@@ -32,7 +32,16 @@ public class Space extends Location {//building or floor Composite
     }
 
     /**
+     *  Add location to current locations array
+     *
+     * @param location Location object that will be added to array
+     */
+    public void addLocation(Location location){
+        this.locations.add(location);
+    }
+
+    /**
      * The list of locations contained within this space.
      */
-    private ArrayList<Location> locations;
+    private final ArrayList<Location> locations = new ArrayList<>();
 }
