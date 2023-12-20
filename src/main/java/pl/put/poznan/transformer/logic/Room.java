@@ -80,6 +80,14 @@ public class Room extends Location {
     }
 
     /**
+     * Retrieves the heating value of the room.
+     *
+     * @return The heating of the room.
+     */
+    public Float getHeatingValue() {return this.heating;}
+
+
+    /**
      * Sets the heating value of the room.
      *
      * @param heating The new heating value to set.
@@ -95,6 +103,15 @@ public class Room extends Location {
      */
     public Float getLight() {
         return this.light / this.area;
+    }
+
+    /**
+     * Retrieves the light value of the room.
+     *
+     * @return The light value of the room.
+     */
+    public Float getLightValue() {
+        return this.light;
     }
 
     /**

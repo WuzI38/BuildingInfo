@@ -84,7 +84,7 @@ class AdderTest {
         properLevel2.addLocation(properRoom4);
         properBuilding.addLocation(properLevel1);
         properBuilding.addLocation(properLevel2);
-        assertNotEquals(0.0,adder.calculate(properBuilding,"Building 1","humidity"));
+        assertTrue(adder.calculate(properBuilding,"Building 1","humidity")<0.0f);
     }
 
     @Test

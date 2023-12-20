@@ -45,6 +45,15 @@ public final class Adder {
                 ArrayList<Location> l2 = new ArrayList<>(){{add(subLoc);}};
                 return calculateLocations(l2, param);
             }
+
+            // If subLoc is a room, do not cast it to Space, like in code below this if
+            if(subLoc instanceof Room){
+                if (Objects.equals(subLoc.getName(), name)) {
+                    return getSingleParam((Room) subLoc, param);
+                }
+                continue;
+            }
+
             // For each room on the floor
             for (Location room: ((Space)subLoc).getLocations()) {
                 // If location is a room
@@ -77,6 +86,7 @@ public final class Adder {
         }
         catch (NoSuchMethodException e) {
             logger.info("Method not found: {}",e.getMessage());
+            return -1.0f;
         }
         catch (IllegalAccessException | InvocationTargetException e) {
             logger.info("Error invoking method: {}",e.getMessage());
