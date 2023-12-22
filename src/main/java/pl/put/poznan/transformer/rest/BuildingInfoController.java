@@ -1,4 +1,5 @@
 package pl.put.poznan.transformer.rest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -11,12 +12,11 @@ import java.util.Map;
 @RestController
 @RequestMapping
 public class BuildingInfoController {
-
     private static final Logger logger = LoggerFactory.getLogger(BuildingInfoController.class);
 
-    @RequestMapping(method = RequestMethod.POST, produces = "application/json", params = {"name","param"}, value = "/{id}")
+    @RequestMapping(method = RequestMethod.POST, produces = "application/json", params = {"name","param"})
     public Map<String, Object> post(@RequestBody Space space, @RequestParam(value = "name") String name,
-                                    @RequestParam(value = "param") String param, @PathVariable String id) {
+                                    @RequestParam(value = "param") String param) {
 
         // log the parameters
         logger.debug(name);
@@ -30,7 +30,11 @@ public class BuildingInfoController {
         //decide what response to give
         if ((int) result == -1) {
             map.put("error", "Wrong JSON structure");
-        } else {
+        }
+        else if ((int) result == -2) {
+            map.put("error", "The chosen parameter cannot be calculated");
+        }
+        else {
             map.put("result", result);
         }
 

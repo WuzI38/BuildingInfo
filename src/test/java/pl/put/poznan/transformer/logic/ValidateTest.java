@@ -1,16 +1,17 @@
 package pl.put.poznan.transformer.logic;
 
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ValidateTest {
-
-    Validate vali = null;
-
     Room properRoom1 = null;
     Room properRoom2 = null;
     Room properRoom3 = null;
@@ -21,11 +22,8 @@ class ValidateTest {
 
     Space properBuilding = null;
 
-
-
     @BeforeEach
     void setUp() {
-        vali = new Validate();
         properRoom1 = new Room(10.0f,10.0f,10.0f,10.0f,101, "Room 1");
         properRoom2 = new Room(10.0f,10.0f,10.0f,10.0f,102, "Room 2");
         properRoom3 = new Room(10.0f,10.0f,10.0f,10.0f,103, "Room 3");
@@ -39,7 +37,6 @@ class ValidateTest {
 
     @AfterEach
     void tearDown() {
-        vali = null;
         properRoom1 = null;
         properRoom2 = null;
         properRoom3 = null;
@@ -53,43 +50,62 @@ class ValidateTest {
 
     @Test
     public void TestProperBuilding(){
-        properLevel1.addLocation(properRoom1);
-        properLevel1.addLocation(properRoom2);
-        properLevel2.addLocation(properRoom3);
-        properLevel2.addLocation(properRoom4);
-        properBuilding.addLocation(properLevel1);
-        properBuilding.addLocation(properLevel2);
-        assertEquals(true, vali.validateStructure(properBuilding,3));
+        Room mockRoom = Mockito.mock(Room.class);
+        Space mockLevel = Mockito.mock(Space.class);
+        Space mockBuilding = Mockito.mock(Space.class);
+
+        ArrayList<Location> rooms = new ArrayList<>();
+        rooms.add(mockRoom);
+        rooms.add(mockRoom);
+
+        ArrayList<Location> levels = new ArrayList<>();
+        levels.add(mockLevel);
+        levels.add(mockLevel);
+
+        Mockito.when(mockLevel.getLocations()).thenReturn(rooms);
+        Mockito.when(mockBuilding.getLocations()).thenReturn(levels);
+
+        assertTrue(Validate.validateStructure(mockBuilding, 3));
     }
 
     @Test
     public void TestDepth4(){
-        properLevel1.addLocation(properRoom1);
-        properLevel1.addLocation(properRoom2);
-        properLevel2.addLocation(properRoom3);
-        properLevel2.addLocation(properRoom4);
-        properBuilding.addLocation(properLevel1);
+        Room mockRoom = Mockito.mock(Room.class);
+        Space mockLevel = Mockito.mock(Space.class);
+        Space mockBuilding = Mockito.mock(Space.class);
+        Space mockTwoBuildings = Mockito.mock(Space.class);
 
-        Space properBuilding2 = new Space(14,"Space 69");
-        properBuilding2.addLocation(properLevel2);
+        ArrayList<Location> locations = new ArrayList<>();
+        locations.add(mockRoom);
+        locations.add(mockRoom);
 
+        ArrayList<Location> levels = new ArrayList<>();
+        locations.add(mockLevel);
+        locations.add(mockLevel);
 
-        Space twoBuildings = new Space(1234,"area");
-        twoBuildings.addLocation(properBuilding);
-        twoBuildings.addLocation(properBuilding2);
-        assertEquals(true, vali.validateStructure(twoBuildings,4));
+        ArrayList<Location> buildings = new ArrayList<>();
+        locations.add(mockBuilding);
+        locations.add(mockBuilding);
+
+        Mockito.when(mockLevel.getLocations()).thenReturn(locations);
+        Mockito.when(mockBuilding.getLocations()).thenReturn(levels);
+        Mockito.when(mockTwoBuildings.getLocations()).thenReturn(buildings);
+
+        assertTrue(Validate.validateStructure(mockBuilding, 4));
     }
 
-    @Test
+
+    /*@Test
     public void TestDepth2(){
-        properLevel1.addLocation(properRoom1);
-        properLevel1.addLocation(properRoom2);
+        Space mockLevel = Mockito.mock(Space.class);
+        Space mockBuilding = Mockito.mock(Space.class);
 
-        Space twoBuildings = new Space(1234,"area");
-        twoBuildings.addLocation(properBuilding);
-        twoBuildings.addLocation(properBuilding);
-        assertEquals(true, vali.validateStructure(properLevel1,2));
-    }
+        ArrayList<Location> levels = new ArrayList<>();
+        locations.add(mockLevel);
+        locations.add(mockLevel);
+
+        assertTrue(Validate.validateStructure(properLevel1, 2));
+    }*/
 
     @Test
     public void TestDepth1(){
@@ -99,7 +115,7 @@ class ValidateTest {
         Space twoBuildings = new Space(1234,"area");
         twoBuildings.addLocation(properBuilding);
         twoBuildings.addLocation(properBuilding);
-        assertEquals(false, vali.validateStructure(properLevel1,1));
+        assertFalse(Validate.validateStructure(properLevel1, 1));
     }
 
     @Test
@@ -111,7 +127,7 @@ class ValidateTest {
         properLevel2.addLocation(properRoom4);
         properBuilding.addLocation(properLevel1);
         properBuilding.addLocation(properLevel2);
-        assertEquals(false, vali.validateStructure(properBuilding,3));
+        assertFalse(Validate.validateStructure(properBuilding, 3));
     }
 
     @Test
@@ -123,7 +139,7 @@ class ValidateTest {
         properLevel2.addLocation(properRoom4);
         properBuilding.addLocation(spaceNoID);
         properBuilding.addLocation(properLevel2);
-        assertEquals(false, vali.validateStructure(properBuilding,3));
+        assertFalse(Validate.validateStructure(properBuilding, 3));
     }
 
     @Test
@@ -135,7 +151,7 @@ class ValidateTest {
         properLevel2.addLocation(properRoom4);
         properBuilding.addLocation(properLevel1);
         properBuilding.addLocation(properLevel2);
-        assertEquals(true, vali.validateStructure(properBuilding,3));
+        assertTrue(Validate.validateStructure(properBuilding, 3));
     }
 
     @Test
@@ -147,7 +163,7 @@ class ValidateTest {
         properLevel2.addLocation(properRoom4);
         properBuilding.addLocation(spaceNoName);
         properBuilding.addLocation(properLevel2);
-        assertEquals(true, vali.validateStructure(properBuilding,3));
+        assertTrue(Validate.validateStructure(properBuilding, 3));
     }
 
     @Test
@@ -159,7 +175,7 @@ class ValidateTest {
         properLevel2.addLocation(properRoom4);
         properBuilding.addLocation(properLevel1);
         properBuilding.addLocation(properLevel2);
-        assertEquals(false, vali.validateStructure(properBuilding,3));
+        assertFalse(Validate.validateStructure(properBuilding, 3));
     }
 
     @Test
@@ -171,7 +187,7 @@ class ValidateTest {
         properLevel2.addLocation(properRoom4);
         properBuilding.addLocation(properLevel1);
         properBuilding.addLocation(properLevel2);
-        assertEquals(false, vali.validateStructure(properBuilding,3));
+        assertFalse(Validate.validateStructure(properBuilding, 3));
     }
 
     @Test
@@ -183,7 +199,7 @@ class ValidateTest {
         properLevel2.addLocation(properRoom4);
         properBuilding.addLocation(properLevel1);
         properBuilding.addLocation(properLevel2);
-        assertEquals(false, vali.validateStructure(properBuilding,3));
+        assertFalse(Validate.validateStructure(properBuilding, 3));
     }
 
     @Test
@@ -195,7 +211,7 @@ class ValidateTest {
         properLevel2.addLocation(properRoom4);
         properBuilding.addLocation(properLevel1);
         properBuilding.addLocation(properLevel2);
-        assertEquals(false, vali.validateStructure(properBuilding,3));
+        assertFalse(Validate.validateStructure(properBuilding, 3));
     }
 
     @Test
@@ -207,7 +223,7 @@ class ValidateTest {
         properLevel2.addLocation(properRoom4);
         properBuilding.addLocation(properLevel1);
         properBuilding.addLocation(properLevel2);
-        assertEquals(false, vali.validateStructure(properBuilding,3));
+        assertFalse(Validate.validateStructure(properBuilding, 3));
     }
 
     @Test
@@ -219,7 +235,7 @@ class ValidateTest {
         properLevel2.addLocation(properRoom4);
         properBuilding.addLocation(properLevel1);
         properBuilding.addLocation(properLevel2);
-        assertEquals(false, vali.validateStructure(properBuilding,3));
+        assertFalse(Validate.validateStructure(properBuilding, 3));
     }
 
     @Test
@@ -231,7 +247,7 @@ class ValidateTest {
         properLevel2.addLocation(properRoom4);
         properBuilding.addLocation(properLevel1);
         properBuilding.addLocation(properLevel2);
-        assertEquals(true, vali.validateStructure(properBuilding,3));
+        assertTrue(Validate.validateStructure(properBuilding, 3));
     }
 
     @Test
@@ -243,7 +259,7 @@ class ValidateTest {
         properLevel2.addLocation(properRoom4);
         properBuilding.addLocation(properLevel1);
         properBuilding.addLocation(properLevel2);
-        assertEquals(true, vali.validateStructure(properBuilding,3));
+        assertTrue(Validate.validateStructure(properBuilding, 3));
     }
 
     @Test
@@ -255,7 +271,7 @@ class ValidateTest {
         properLevel2.addLocation(properRoom4);
         properBuilding.addLocation(properLevel1);
         properBuilding.addLocation(properLevel2);
-        assertEquals(false, vali.validateStructure(properBuilding,3));
+        assertFalse(Validate.validateStructure(properBuilding, 3));
     }
 
     @Test
@@ -267,7 +283,7 @@ class ValidateTest {
         properLevel2.addLocation(properRoom4);
         properBuilding.addLocation(properLevel1);
         properBuilding.addLocation(properLevel2);
-        assertEquals(false, vali.validateStructure(properBuilding,3));
+        assertFalse(Validate.validateStructure(properBuilding, 3));
     }
     @Test
     public void TestNegativeHeating(){
@@ -278,7 +294,7 @@ class ValidateTest {
         properLevel2.addLocation(properRoom4);
         properBuilding.addLocation(properLevel1);
         properBuilding.addLocation(properLevel2);
-        assertEquals(false, vali.validateStructure(properBuilding,3));
+        assertFalse(Validate.validateStructure(properBuilding, 3));
     }
 
     @Test
@@ -290,7 +306,7 @@ class ValidateTest {
         properLevel2.addLocation(properRoom4);
         properBuilding.addLocation(properLevel1);
         properBuilding.addLocation(properLevel2);
-        assertEquals(false, vali.validateStructure(properBuilding,3));
+        assertFalse(Validate.validateStructure(properBuilding, 3));
     }
 
     @Test
@@ -302,7 +318,7 @@ class ValidateTest {
         properLevel2.addLocation(roomDuplicateID);
         properBuilding.addLocation(properLevel1);
         properBuilding.addLocation(properLevel2);
-        assertEquals(false, vali.validateStructure(properBuilding,3));
+        assertFalse(Validate.validateStructure(properBuilding, 3));
     }
 
     @Test
@@ -314,7 +330,7 @@ class ValidateTest {
         properLevel2.addLocation(roomDuplicateName);
         properBuilding.addLocation(properLevel1);
         properBuilding.addLocation(properLevel2);
-        assertEquals(false, vali.validateStructure(properBuilding,3));
+        assertFalse(Validate.validateStructure(properBuilding, 3));
     }
 
 

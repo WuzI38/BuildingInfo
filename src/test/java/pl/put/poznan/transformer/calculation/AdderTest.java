@@ -10,8 +10,6 @@ import pl.put.poznan.transformer.logic.Space;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AdderTest {
-
-    Adder adder = null;
     Room properRoom1 = null;
     Room properRoom2 = null;
     Room properRoom3 = null;
@@ -24,7 +22,6 @@ class AdderTest {
 
     @BeforeEach
     void setUp() {
-        adder = new Adder();
         properRoom1 = new Room(10.0f,20.0f,30.0f,40.0f,101, "Room 1");
         properRoom2 = new Room(10.0f,20.0f,30.0f,40.0f,102, "Room 2");
         properRoom3 = new Room(10.0f,20.0f,30.0f,40.0f,103, "Room 3");
@@ -38,8 +35,6 @@ class AdderTest {
 
     @AfterEach
     void tearDown() {
-        adder = null;
-
         properRoom1 = null;
         properRoom2 = null;
         properRoom3 = null;
@@ -59,10 +54,10 @@ class AdderTest {
         properLevel2.addLocation(properRoom4);
         properBuilding.addLocation(properLevel1);
         properBuilding.addLocation(properLevel2);
-        assertEquals(40.0f,adder.calculate(properBuilding,"Building 1","area"));
-        assertEquals(80.0f,adder.calculate(properBuilding,"Building 1","cube"));
-        assertEquals(6.0f,adder.calculate(properBuilding,"Building 1","heating"));
-        assertEquals(16.0f,adder.calculate(properBuilding,"Building 1","light"));
+        assertEquals(40.0f,Adder.calculate(properBuilding,"Building 1","area"));
+        assertEquals(80.0f,Adder.calculate(properBuilding,"Building 1","cube"));
+        assertEquals(6.0f,Adder.calculate(properBuilding,"Building 1","heating"));
+        assertEquals(16.0f,Adder.calculate(properBuilding,"Building 1","light"));
     }
 
     @Test
@@ -70,10 +65,10 @@ class AdderTest {
         properLevel1.addLocation(properRoom1);
         properLevel1.addLocation(properRoom2);
 
-        assertEquals(20.0f,adder.calculate(properLevel1,"Level 1","area"));
-        assertEquals(40.0f,adder.calculate(properLevel1,"Level 1","cube"));
-        assertEquals(3.0f,adder.calculate(properLevel1,"Level 1","heating"));
-        assertEquals(8.0f,adder.calculate(properLevel1,"Level 1","light"));
+        assertEquals(20.0f,Adder.calculate(properLevel1,"Level 1","area"));
+        assertEquals(40.0f,Adder.calculate(properLevel1,"Level 1","cube"));
+        assertEquals(3.0f,Adder.calculate(properLevel1,"Level 1","heating"));
+        assertEquals(8.0f,Adder.calculate(properLevel1,"Level 1","light"));
     }
 
     @Test
@@ -84,7 +79,7 @@ class AdderTest {
         properLevel2.addLocation(properRoom4);
         properBuilding.addLocation(properLevel1);
         properBuilding.addLocation(properLevel2);
-        assertTrue(adder.calculate(properBuilding,"Building 1","humidity")<0.0f);
+        assertTrue(Adder.calculate(properBuilding,"Building 1","humidity")<0.0f);
     }
 
     @Test
@@ -95,14 +90,14 @@ class AdderTest {
         properLevel2.addLocation(properRoom4);
         properBuilding.addLocation(properLevel1);
         properBuilding.addLocation(properLevel2);
-        assertEquals(-1,adder.calculate(properBuilding,"Biedronka","area"));
+        assertEquals(-1,Adder.calculate(properBuilding,"Biedronka","area"));
     }
 
     @Test
     public void TestUnknownNameLevel(){
         properLevel1.addLocation(properRoom1);
         properLevel1.addLocation(properRoom2);
-        assertEquals(-1,adder.calculate(properLevel1,"Lidl","cube"));
+        assertEquals(-1,Adder.calculate(properLevel1,"Lidl","cube"));
     }
 
 

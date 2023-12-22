@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * It checks the integrity and correctness of the hierarchical structure based on the specified depth.
  * @version 1.0
  */
-public class Validate {
+public final class Validate {
     private static final Logger logger = LoggerFactory.getLogger(Validate.class);
     /**
      * Validates the structure of the given location object to ensure it conforms to the expected format.
@@ -26,7 +26,7 @@ public class Validate {
         if(!findDuplicateIDsAndNames(location))
             return false;
 
-        if(depth < 2 || location.getClass() == Room.class){
+        if(depth < 2 || location instanceof Room){
             logger.debug("Structure {} is not Space",location.getName());
             return false; //has to be space
         }
@@ -54,7 +54,7 @@ public class Validate {
         for (Location location : locations) {
             if (location.getId() == null) return false;
             if (depth > 1) {//Space
-                if (location.getClass() == Space.class) {//only Spaces are on higher levels
+                if (location instanceof Space) {//only Spaces are on higher levels
                     Space space = (Space) location;
                     ArrayList<Location> nextLocations = space.getLocations();
                     if (nextLocations != null)
@@ -62,7 +62,7 @@ public class Validate {
                             return false;
                 } else return false;
             } else {//Room
-                if (location.getClass() == Room.class) {
+                if (location instanceof Room) {
                     Room room = (Room) location;
                     if (room.getArea() == null || room.getCube() == null || //has all needed attributes
                             room.getHeatingValue() == null || room.getLightValue() == null)
@@ -117,7 +117,7 @@ public class Validate {
      * @param ids Array list of Integer IDs to extend
      */
     private static void findDuplicateIDsAndNamesRec(Location location, ArrayList<String> names, ArrayList<Integer> ids){
-        if(location.getClass() == Room.class) {
+        if(location instanceof Room) {
             if(location.getName()!=null)
                 names.add(location.getName());
             if(location.getId()!=null)
