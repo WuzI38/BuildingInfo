@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * It checks the integrity and correctness of the hierarchical structure based on the specified depth.
  * @version 1.0
  */
-public class Validate {
+public final class Validate {
     private static final Logger logger = LoggerFactory.getLogger(Validate.class);
     /**
      * Validates the structure of the given location object to ensure it conforms to the expected format.
@@ -23,7 +23,10 @@ public class Validate {
      */
     public static boolean validateStructure(Location location, Integer depth) {
         logger.debug("Validating structure {}",location.getName());
-        if(depth < 2 || location.getClass() == Room.class){
+        if(!findDuplicateIDsAndNames(location))
+            return false;
+
+        if(depth < 2 || location instanceof Room){
             logger.debug("Structure {} is not Space",location.getName());
             return false; //has to be space
         }
@@ -51,23 +54,77 @@ public class Validate {
         for (Location location : locations) {
             if (location.getId() == null) return false;
             if (depth > 1) {//Space
-                if (location.getClass() == Space.class) {//only Spaces are on higher levels
+                if (location instanceof Space) {//only Spaces are on higher levels
                     Space space = (Space) location;
                     ArrayList<Location> nextLocations = space.getLocations();
                     if (nextLocations != null)
                         if (!validateLevel(nextLocations, depth - 1))
-                            return false;
+                            return validateLevel(nextLocations, depth - 1);
                 } else return false;
             } else {//Room
-                if (location.getClass() == Room.class) {
+                if (location instanceof Room) {
                     Room room = (Room) location;
-                    if (room.getArea() == null || room.getCube() == null || //has all needed attributes
-                            room.getHeating() == null || room.getLight() == null)
-                        return false;//only Rooms are on lowest level
+                    if (!room.checkIfNull() || !room.checkIfZero())
+                        return false;
                 } else return false;
             }
         }
         logger.debug("Structure validation succeed");
         return true;
     }
+
+    /**
+     * Function call recursive function to collect list of names and ids in the given location structure.
+     * Then it checks if collected lists contain duplicates. If so, function returns true.
+     *
+     * @param location The location object to validate
+     * @return returns true if structure has duplicated names or IDs
+     */
+    private static boolean findDuplicateIDsAndNames(Location location){
+        ArrayList<String> names = new ArrayList<>();
+        ArrayList<Integer> ids = new ArrayList<>();
+
+        findDuplicateIDsAndNamesRec(location,names,ids);
+
+        for(int i = 0; i< names.size(); i++){
+            for(int j=i+1;j<names.size(); j++){
+                if(names.get(i).equals(names.get(j)))
+                    return false;
+            }
+        }
+
+        for(int i = 0; i< ids.size(); i++){
+            for(int j=i+1;j<ids.size(); j++){
+                if(ids.get(i).equals(ids.get(j)))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Recursively append names and IDs to given array lists.
+     * In general, function collects all names and IDs from given structure.
+     *
+     * @param location The Location object
+     * @param names Array list of string names to extend
+     * @param ids Array list of Integer IDs to extend
+     */
+    private static void findDuplicateIDsAndNamesRec(Location location, ArrayList<String> names, ArrayList<Integer> ids){
+        if(location instanceof Room) {
+            if(location.getName()!=null)
+                names.add(location.getName());
+            if(location.getId()!=null)
+                ids.add(location.getId());
+            return;
+        }
+
+        Space space = (Space) location;
+        ArrayList<Location> locations = space.getLocations();
+        for(Location location2 : locations){
+            findDuplicateIDsAndNamesRec(location2,names,ids);
+        }
+    }
+
 }

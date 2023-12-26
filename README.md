@@ -20,7 +20,7 @@ The application can calculate the sum of a chosen parameter (specified by the `p
 - Launch the application using `java -jar target/BuildingInfo-1.3.jar`.
 - To get the sum of a chosen parameter, use the following command:
   
-```curl -H "Content-Type: application/json" -H "Accept: application/json"  -X POST -d @src/main/resources/testGood.json "http://localhost:8080/2137?name=Lokacja+B&param=area"```
+```curl -H "Content-Type: application/json" -H "Accept: application/json"  -X POST -d @src/main/resources/testGood.json "http://localhost:8080?name=Lokacja+B&param=area"```
 
 The  `@src/main/resources/testGood.json` file is a path to a JSON file that describes an example location (room or building). You can replace it with a similar file that follows the same structure.
 The `name` is the name of your chosen location (which might be a part of the whole location given by the JSON file), and there are four possibilities for `param`:

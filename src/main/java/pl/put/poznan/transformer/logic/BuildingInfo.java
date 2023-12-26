@@ -19,17 +19,21 @@ public class BuildingInfo {
      * @param location The location to calculate the parameter for.
      * @param name The name of the location.
      * @param param The parameter to calculate.
-     * @return The calculated parameter. Returns -1 if the structure validation fails.
+     * @return The calculated parameter. Returns -1 if the structure validation fails. Returns -2 if the parameter cannot be calculated.
      */
     public float getParam(Location location, String name, String param) {
         logger.info("Calculating {} of {} ",param,name);
 
-        if(!Validate.validateStructure(location,3)) return -1;
+        if(!Validate.validateStructure(location,3)) return -1; // Zmienic na !
         logger.info("Validation of {} succeed",location.getName());
 
-
-        float calculatedParam = Adder.calculate(location, name, param);
-        logger.info("{} has {} equal {}",name,param,calculatedParam);
-        return calculatedParam;
+        try {
+            float calculatedParam = Adder.calculate(location, name, param);
+            logger.info("{} has {} equal {}",name,param,calculatedParam);
+            return calculatedParam;
+        } catch (Exception e) {
+            logger.error("Error calculating param", e);
+            return -2;
+        }
     }
 }

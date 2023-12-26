@@ -80,6 +80,14 @@ public class Room extends Location {
     }
 
     /**
+     * Retrieves the heating value of the room.
+     *
+     * @return The heating of the room.
+     */
+    public Float getHeatingValue() {return this.heating;}
+
+
+    /**
      * Sets the heating value of the room.
      *
      * @param heating The new heating value to set.
@@ -98,11 +106,34 @@ public class Room extends Location {
     }
 
     /**
+     * Retrieves the light value of the room.
+     *
+     * @return The light value of the room.
+     */
+    public Float getLightValue() {
+        return this.light;
+    }
+
+    /**
      * Sets the light value of the room.
      *
      * @param light The new light value to set.
      */
     public void setLight(Float light) {
         this.light = light;
+    }
+
+    /**
+     * Checks if the room object is properly initialized with positive values.
+     */
+    public boolean checkIfZero() {
+        return (area > 0 && cube > 0 && light >= 0 && heating >= 0);
+    }
+
+    /**
+     * Checks if the room object is properly initialized with non-null values.
+     */
+    public boolean checkIfNull() {
+        return (area != null && cube != null && light != null && heating != null);
     }
 }
