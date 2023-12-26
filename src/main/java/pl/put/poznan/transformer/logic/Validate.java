@@ -59,17 +59,12 @@ public final class Validate {
                     ArrayList<Location> nextLocations = space.getLocations();
                     if (nextLocations != null)
                         if (!validateLevel(nextLocations, depth - 1))
-                            return false;
+                            return validateLevel(nextLocations, depth - 1);
                 } else return false;
             } else {//Room
                 if (location instanceof Room) {
                     Room room = (Room) location;
-                    if (room.getArea() == null || room.getCube() == null || //has all needed attributes
-                            room.getHeatingValue() == null || room.getLightValue() == null)
-                        return false;//only Rooms are on lowest level
-                    // Attributes are positive, area and cube are greater than zero
-                    if(room.getArea()<=0.0f || room.getCube()<=0.0f ||
-                            room.getHeatingValue() < 0.0f || room.getLightValue() < 0.0f)
+                    if (!room.checkIfNull() || !room.checkIfZero())
                         return false;
                 } else return false;
             }

@@ -122,4 +122,18 @@ public class Room extends Location {
     public void setLight(Float light) {
         this.light = light;
     }
+
+    /**
+     * Checks if the room object is properly initialized with positive values.
+     */
+    public boolean checkIfZero() {
+        return (area > 0 && cube > 0 && light >= 0 && heating >= 0);
+    }
+
+    /**
+     * Checks if the room object is properly initialized with non-null values.
+     */
+    public boolean checkIfNull() {
+        return (area != null && cube != null && light != null && heating != null);
+    }
 }

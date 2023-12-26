@@ -24,7 +24,7 @@ public class BuildingInfo {
     public float getParam(Location location, String name, String param) {
         logger.info("Calculating {} of {} ",param,name);
 
-        if(!Validate.validateStructure(location,3)) return -1;
+        if(!Validate.validateStructure(location,3)) return -1; // Zmienic na !
         logger.info("Validation of {} succeed",location.getName());
 
         try {

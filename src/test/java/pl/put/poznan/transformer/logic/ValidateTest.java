@@ -1,15 +1,14 @@
 package pl.put.poznan.transformer.logic;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ValidateTest {
     Room properRoom1 = null;
@@ -21,6 +20,8 @@ class ValidateTest {
     Space properLevel2 = null;
 
     Space properBuilding = null;
+
+    static Room[] mockRooms;
 
     @BeforeEach
     void setUp() {
@@ -48,86 +49,164 @@ class ValidateTest {
         properBuilding = null;
     }
 
-    @Test
+    @BeforeAll
+    public static void setUpMocks() {
+        mockRooms = new Room[8];
+        for (int i = 0; i < mockRooms.length; i++) {
+            mockRooms[i] = Mockito.mock(Room.class);
+            Mockito.when(mockRooms[i].checkIfNull()).thenReturn(true);
+            Mockito.when(mockRooms[i].checkIfZero()).thenReturn(true);
+            Mockito.when(mockRooms[i].getId()).thenReturn(i + 1);
+            Mockito.when(mockRooms[i].getName()).thenReturn("Room " + (i + 1));
+        }
+    }
+
+    @Test // Mock test 1
     public void TestProperBuilding(){
-        Room mockRoom = Mockito.mock(Room.class);
-        Space mockLevel = Mockito.mock(Space.class);
+        Space mockLevel1 = Mockito.mock(Space.class);
+        Space mockLevel2 = Mockito.mock(Space.class);
         Space mockBuilding = Mockito.mock(Space.class);
 
-        ArrayList<Location> rooms = new ArrayList<>();
-        rooms.add(mockRoom);
-        rooms.add(mockRoom);
+        ArrayList<Location> rooms1 = new ArrayList<>();
+        rooms1.add(mockRooms[0]);
+        rooms1.add(mockRooms[1]);
+
+        ArrayList<Location> rooms2 = new ArrayList<>();
+        rooms2.add(mockRooms[2]);
+        rooms2.add(mockRooms[3]);
 
         ArrayList<Location> levels = new ArrayList<>();
-        levels.add(mockLevel);
-        levels.add(mockLevel);
+        levels.add(mockLevel1);
+        levels.add(mockLevel2);
 
-        Mockito.when(mockLevel.getLocations()).thenReturn(rooms);
+        Mockito.when(mockLevel1.getLocations()).thenReturn(rooms1);
+        Mockito.when(mockLevel2.getLocations()).thenReturn(rooms2);
         Mockito.when(mockBuilding.getLocations()).thenReturn(levels);
 
         assertTrue(Validate.validateStructure(mockBuilding, 3));
     }
 
-    @Test
+    @Test // Mock test 2
     public void TestDepth4(){
-        Room mockRoom = Mockito.mock(Room.class);
-        Space mockLevel = Mockito.mock(Space.class);
-        Space mockBuilding = Mockito.mock(Space.class);
-        Space mockTwoBuildings = Mockito.mock(Space.class);
+        Space mockLevel1 = Mockito.mock(Space.class);
+        Space mockLevel2 = Mockito.mock(Space.class);
+        Space mockLevel3 = Mockito.mock(Space.class);
+        Space mockLevel4 = Mockito.mock(Space.class);
+        Space mockBuilding1 = Mockito.mock(Space.class);
+        Space mockBuilding2 = Mockito.mock(Space.class);
+        Space mockBuildings = Mockito.mock(Space.class);
 
-        ArrayList<Location> locations = new ArrayList<>();
-        locations.add(mockRoom);
-        locations.add(mockRoom);
+        ArrayList<Location> rooms1 = new ArrayList<>();
+        rooms1.add(mockRooms[0]);
+        rooms1.add(mockRooms[1]);
 
-        ArrayList<Location> levels = new ArrayList<>();
-        locations.add(mockLevel);
-        locations.add(mockLevel);
+        ArrayList<Location> rooms2 = new ArrayList<>();
+        rooms2.add(mockRooms[2]);
+        rooms2.add(mockRooms[3]);
+
+        ArrayList<Location> rooms3 = new ArrayList<>();
+        rooms1.add(mockRooms[4]);
+        rooms1.add(mockRooms[5]);
+
+        ArrayList<Location> rooms4 = new ArrayList<>();
+        rooms2.add(mockRooms[6]);
+        rooms2.add(mockRooms[7]);
+
+        ArrayList<Location> levels1 = new ArrayList<>();
+        levels1.add(mockLevel1);
+        levels1.add(mockLevel2);
+
+        ArrayList<Location> levels2 = new ArrayList<>();
+        levels1.add(mockLevel3);
+        levels1.add(mockLevel4);
 
         ArrayList<Location> buildings = new ArrayList<>();
-        locations.add(mockBuilding);
-        locations.add(mockBuilding);
+        levels1.add(mockBuilding1);
+        levels1.add(mockBuilding2);
 
-        Mockito.when(mockLevel.getLocations()).thenReturn(locations);
-        Mockito.when(mockBuilding.getLocations()).thenReturn(levels);
-        Mockito.when(mockTwoBuildings.getLocations()).thenReturn(buildings);
+        Mockito.when(mockLevel1.getLocations()).thenReturn(rooms1);
+        Mockito.when(mockLevel2.getLocations()).thenReturn(rooms2);
+        Mockito.when(mockLevel3.getLocations()).thenReturn(rooms3);
+        Mockito.when(mockLevel4.getLocations()).thenReturn(rooms4);
+        Mockito.when(mockBuilding1.getLocations()).thenReturn(levels1);
+        Mockito.when(mockBuilding1.getLocations()).thenReturn(levels2);
+        Mockito.when(mockBuildings.getLocations()).thenReturn(buildings);
 
-        assertTrue(Validate.validateStructure(mockBuilding, 4));
+        assertTrue(Validate.validateStructure(mockBuildings, 4));
     }
 
 
-    /*@Test
+    @Test // Mock test 3
     public void TestDepth2(){
         Space mockLevel = Mockito.mock(Space.class);
-        Space mockBuilding = Mockito.mock(Space.class);
 
-        ArrayList<Location> levels = new ArrayList<>();
-        locations.add(mockLevel);
-        locations.add(mockLevel);
+        ArrayList<Location> rooms = new ArrayList<>();
+        rooms.add(mockRooms[0]);
+        rooms.add(mockRooms[1]);
 
-        assertTrue(Validate.validateStructure(properLevel1, 2));
-    }*/
+        Mockito.when(mockLevel.getLocations()).thenReturn(rooms);
 
-    @Test
-    public void TestDepth1(){
-        properLevel1.addLocation(properRoom1);
-        properLevel1.addLocation(properRoom2);
-
-        Space twoBuildings = new Space(1234,"area");
-        twoBuildings.addLocation(properBuilding);
-        twoBuildings.addLocation(properBuilding);
-        assertFalse(Validate.validateStructure(properLevel1, 1));
+        assertTrue(Validate.validateStructure(mockLevel, 2));
     }
 
-    @Test
+    @Test // Mock test 4
+    public void TestDepth1(){
+        assertFalse(Validate.validateStructure(mockRooms[0], 1));
+    }
+
+    @Test // Mock test 5
     public void TestNullIDRoom(){
-        Room roomNoID = new Room(10.0f,10.0f,10.0f,10.0f,null,"noid");
-        properLevel1.addLocation(properRoom1);
-        properLevel1.addLocation(roomNoID);
-        properLevel2.addLocation(properRoom3);
-        properLevel2.addLocation(properRoom4);
-        properBuilding.addLocation(properLevel1);
-        properBuilding.addLocation(properLevel2);
-        assertFalse(Validate.validateStructure(properBuilding, 3));
+        Room r1 = Mockito.mock(Room.class);
+        Mockito.when(r1.checkIfNull()).thenReturn(true);
+        Mockito.when(r1.checkIfZero()).thenReturn(true);
+        Mockito.when(r1.getId()).thenReturn(null);
+
+        Space mockLevel = Mockito.mock(Space.class);
+
+        ArrayList<Location> rooms = new ArrayList<>();
+        rooms.add(mockRooms[0]);
+        rooms.add(r1);
+
+        Mockito.when(mockLevel.getLocations()).thenReturn(rooms);
+
+        assertFalse(Validate.validateStructure(mockLevel, 2));
+    }
+
+    @Test // Mock test 6
+    public void TestMockNull(){
+        Room r1 = Mockito.mock(Room.class);
+        Mockito.when(r1.checkIfNull()).thenReturn(false);
+        Mockito.when(r1.checkIfZero()).thenReturn(true);
+        Mockito.when(r1.getId()).thenReturn(0);
+
+        Space mockLevel = Mockito.mock(Space.class);
+
+        ArrayList<Location> rooms = new ArrayList<>();
+        rooms.add(mockRooms[0]);
+        rooms.add(r1);
+
+        Mockito.when(mockLevel.getLocations()).thenReturn(rooms);
+
+        assertFalse(Validate.validateStructure(mockLevel, 2));
+    }
+
+    @Test // Mock test 7
+    public void TestMockZeros() {
+        Room r1 = Mockito.mock(Room.class);
+        Mockito.when(r1.checkIfNull()).thenReturn(true);
+        Mockito.when(r1.checkIfZero()).thenReturn(false);
+        Mockito.when(r1.getId()).thenReturn(0);
+        Mockito.when(r1.getName()).thenReturn("Room 0");
+
+        Space mockLevel = Mockito.mock(Space.class);
+
+        ArrayList<Location> rooms = new ArrayList<>();
+        rooms.add(mockRooms[0]);
+        rooms.add(r1);
+
+        Mockito.when(mockLevel.getLocations()).thenReturn(rooms);
+
+        assertFalse(Validate.validateStructure(mockLevel, 2));
     }
 
     @Test
@@ -309,31 +388,56 @@ class ValidateTest {
         assertFalse(Validate.validateStructure(properBuilding, 3));
     }
 
-    @Test
+    @Test // Mock test 8
     public void TestDuplicateID(){
-        Room roomDuplicateID = new Room(20.0f,20.0f,20.0f,20.0f,101,"Room 4");
-        properLevel1.addLocation(properRoom1);
-        properLevel1.addLocation(properRoom2);
-        properLevel2.addLocation(properRoom3);
-        properLevel2.addLocation(roomDuplicateID);
-        properBuilding.addLocation(properLevel1);
-        properBuilding.addLocation(properLevel2);
-        assertFalse(Validate.validateStructure(properBuilding, 3));
-    }
+        Room r1 = Mockito.mock(Room.class);
+        Mockito.when(r1.checkIfNull()).thenReturn(false);
+        Mockito.when(r1.checkIfZero()).thenReturn(false);
+        Mockito.when(r1.getId()).thenReturn(1);
+        Mockito.when(r1.getName()).thenReturn("Room 0");
 
-    @Test
+        Space mockLevel = Mockito.mock(Space.class);
+
+        ArrayList<Location> rooms = new ArrayList<>();
+        rooms.add(mockRooms[0]);
+        rooms.add(r1);
+
+        Mockito.when(mockLevel.getLocations()).thenReturn(rooms);
+
+        assertFalse(Validate.validateStructure(mockLevel, 2));
+    }
+    @Test // Mock test 9
     public void TestDuplicateName(){
-        Room roomDuplicateName = new Room(20.0f,20.0f,20.0f,20.0f,104, "Room 1");
-        properLevel1.addLocation(properRoom1);
-        properLevel1.addLocation(properRoom2);
-        properLevel2.addLocation(properRoom3);
-        properLevel2.addLocation(roomDuplicateName);
-        properBuilding.addLocation(properLevel1);
-        properBuilding.addLocation(properLevel2);
-        assertFalse(Validate.validateStructure(properBuilding, 3));
+        Room r1 = Mockito.mock(Room.class);
+        Mockito.when(r1.checkIfNull()).thenReturn(false);
+        Mockito.when(r1.checkIfZero()).thenReturn(false);
+        Mockito.when(r1.getId()).thenReturn(0);
+        Mockito.when(r1.getName()).thenReturn("Room 1");
+
+        Space mockLevel = Mockito.mock(Space.class);
+
+        ArrayList<Location> rooms = new ArrayList<>();
+        rooms.add(mockRooms[0]);
+        rooms.add(r1);
+
+        Mockito.when(mockLevel.getLocations()).thenReturn(rooms);
+
+        assertFalse(Validate.validateStructure(mockLevel, 2));
     }
 
+    @Test // Mock test 10
+    public void TestEmptyMocks(){
+        Room r1 = Mockito.mock(Room.class);
+        Room r2 = Mockito.mock(Room.class);
 
+        Space mockLevel = Mockito.mock(Space.class);
 
+        ArrayList<Location> rooms = new ArrayList<>();
+        rooms.add(r1);
+        rooms.add(r2);
 
+        Mockito.when(mockLevel.getLocations()).thenReturn(rooms);
+
+        assertFalse(Validate.validateStructure(mockLevel, 2));
+    }
 }
