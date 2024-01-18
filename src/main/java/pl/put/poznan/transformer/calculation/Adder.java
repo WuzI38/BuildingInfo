@@ -35,6 +35,12 @@ public final class Adder {
         ArrayList<Location> locations = space.getLocations();
         // If location is a building
         if (Objects.equals(space.getName(), name)) {
+            switch (param){
+                case "light":
+                    return calculateLocations(locations, param) / calculateLocations(locations, "area");
+                case "heating":
+                    return calculateLocations(locations, param) / calculateLocations(locations, "cube");
+            }
             return calculateLocations(locations, param);
         }
 
@@ -43,13 +49,19 @@ public final class Adder {
             // If location is a floor
             if (Objects.equals(subLoc.getName(), name)) {
                 ArrayList<Location> l2 = new ArrayList<>(){{add(subLoc);}};
+                switch (param){
+                    case "light":
+                        return calculateLocations(l2, param) / calculateLocations(l2, "area");
+                    case "heating":
+                        return calculateLocations(l2, param) / calculateLocations(l2, "cube");
+                }
                 return calculateLocations(l2, param);
             }
 
             // If subLoc is a room, do not cast it to Space, like in code below this if
             if(subLoc instanceof Room){
                 if (Objects.equals(subLoc.getName(), name)) {
-                    return getSingleParam((Room) subLoc, param);
+                    return getSingleParam((Room) subLoc, param+"PerUnit");
                 }
                 continue;
             }
@@ -58,7 +70,7 @@ public final class Adder {
             for (Location room: ((Space)subLoc).getLocations()) {
                 // If location is a room
                 if (Objects.equals(room.getName(), name)) {
-                    return getSingleParam((Room) room, param);
+                    return getSingleParam((Room) room, param+"PerUnit");
                 }
             }
         }

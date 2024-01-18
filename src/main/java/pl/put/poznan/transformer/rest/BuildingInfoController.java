@@ -27,6 +27,8 @@ public class BuildingInfoController {
         BuildingInfo transformer = new BuildingInfo();
         float result = transformer.getParam(space, name, param);
 
+        float resultBuilding = transformer.getParam(space, space.getName(), param);
+
         //decide what response to give
         if ((int) result == -1) {
             map.put("error", "Wrong JSON structure");
@@ -35,7 +37,17 @@ public class BuildingInfoController {
             map.put("error", "The chosen parameter cannot be calculated");
         }
         else {
-            map.put("result", result);
+            map.put(param, result);
+            switch (param){
+                case "area":
+                case "cube":
+                    map.put("building %", 0.01 * Math.round(10000 * result / resultBuilding));
+                    break;
+                case "light":
+                case "heating":
+                    map.put("building value", resultBuilding);
+                    break;
+            }
         }
 
         return map;

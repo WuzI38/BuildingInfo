@@ -75,7 +75,7 @@ public class Room extends Location {
      *
      * @return The heating value per unit volume of the room.
      */
-    public Float getHeating() {
+    public Float getHeatingPerUnit() {
         return this.heating / this.cube;
     }
 
@@ -84,7 +84,7 @@ public class Room extends Location {
      *
      * @return The heating of the room.
      */
-    public Float getHeatingValue() {return this.heating;}
+    public Float getHeating() {return this.heating;}
 
 
     /**
@@ -101,7 +101,7 @@ public class Room extends Location {
      *
      * @return The light value per unit area of the room.
      */
-    public Float getLight() {
+    public Float getLightPerUnit() {
         return this.light / this.area;
     }
 
@@ -110,7 +110,7 @@ public class Room extends Location {
      *
      * @return The light value of the room.
      */
-    public Float getLightValue() {
+    public Float getLight() {
         return this.light;
     }
 
