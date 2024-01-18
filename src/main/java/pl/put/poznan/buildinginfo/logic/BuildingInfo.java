@@ -1,8 +1,8 @@
-package pl.put.poznan.transformer.logic;
+package pl.put.poznan.buildinginfo.logic;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.put.poznan.transformer.calculation.Adder;
+import pl.put.poznan.buildinginfo.calculation.Adder;
 
 /**
  * This class contains methods for calculating various building parameters such as area, volume, etc.

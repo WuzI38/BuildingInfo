@@ -1,8 +1,8 @@
-package pl.put.poznan.transformer.calculation;
+package pl.put.poznan.buildinginfo.calculation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.put.poznan.transformer.logic.*;
+import pl.put.poznan.buildinginfo.logic.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

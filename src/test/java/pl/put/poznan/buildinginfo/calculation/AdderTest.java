@@ -1,11 +1,11 @@
-package pl.put.poznan.transformer.calculation;
+package pl.put.poznan.buildinginfo.calculation;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import pl.put.poznan.transformer.logic.Room;
-import pl.put.poznan.transformer.logic.Space;
+import pl.put.poznan.buildinginfo.logic.Room;
+import pl.put.poznan.buildinginfo.logic.Space;
 
 import static org.junit.jupiter.api.Assertions.*;
 
