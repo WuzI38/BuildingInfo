@@ -1,11 +1,11 @@
-package pl.put.poznan.transformer.calculation;
+package pl.put.poznan.buildinginfo.calculation;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import pl.put.poznan.transformer.logic.Room;
-import pl.put.poznan.transformer.logic.Space;
+import pl.put.poznan.buildinginfo.logic.Room;
+import pl.put.poznan.buildinginfo.logic.Space;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -56,8 +56,8 @@ class AdderTest {
         properBuilding.addLocation(properLevel2);
         assertEquals(40.0f,Adder.calculate(properBuilding,"Building 1","area"));
         assertEquals(80.0f,Adder.calculate(properBuilding,"Building 1","cube"));
-        assertEquals(6.0f,Adder.calculate(properBuilding,"Building 1","heating"));
-        assertEquals(16.0f,Adder.calculate(properBuilding,"Building 1","light"));
+        assertEquals(1.5f,Adder.calculate(properBuilding,"Building 1","heating"));
+        assertEquals(4.0f,Adder.calculate(properBuilding,"Building 1","light"));
     }
 
     @Test
@@ -67,8 +67,8 @@ class AdderTest {
 
         assertEquals(20.0f,Adder.calculate(properLevel1,"Level 1","area"));
         assertEquals(40.0f,Adder.calculate(properLevel1,"Level 1","cube"));
-        assertEquals(3.0f,Adder.calculate(properLevel1,"Level 1","heating"));
-        assertEquals(8.0f,Adder.calculate(properLevel1,"Level 1","light"));
+        assertEquals(1.5f,Adder.calculate(properLevel1,"Level 1","heating"));
+        assertEquals(4.0f,Adder.calculate(properLevel1,"Level 1","light"));
     }
 
     @Test
