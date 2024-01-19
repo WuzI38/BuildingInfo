@@ -3,6 +3,9 @@ package pl.put.poznan.buildinginfo.logic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.put.poznan.buildinginfo.calculation.Adder;
+import pl.put.poznan.buildinginfo.calculation.Inspector;
+
+import java.util.ArrayList;
 
 /**
  * This class contains methods for calculating various building parameters such as area, volume, etc.
@@ -34,6 +37,30 @@ public class BuildingInfo {
         } catch (Exception e) {
             logger.error("Error calculating param", e);
             return -2;
+        }
+    }
+    /**
+     * Returns a list of rooms that exceed given limit.
+     *
+     * @param location The location to calculate the parameter for.
+     * @param limit Limit of param above which rooms are added to list.
+     * @param param The parameter to calculate.
+     * @return The ArrayList of Rooms with value of param above limit. Returns null if the structure validation fails.
+     */
+    public ArrayList<Room> roomsAboveParamLimit(Location location, Float limit, String param) {
+        logger.info("Searching rooms with {} above {} ",param,limit);
+
+        if(!Validate.validateStructure(location,3)) return null;
+        logger.info("Validation of {} succeed",location.getName());
+
+        try {
+            ArrayList<Room> resultRooms = Inspector.searchRoomsAboveLimit(location, limit, param);
+            if (resultRooms!=null)
+                logger.info("Found {} rooms above {} {}",resultRooms.size(),limit,param);
+            return resultRooms;
+        } catch (Exception e) {
+            logger.error("Error calculating param", e);
+            return null;
         }
     }
 }
