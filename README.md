@@ -2,7 +2,7 @@
 ![example workflow](https://github.com/WuzI38/BuildingInfo/actions/workflows/ci.yml/badge.svg)
 
 ## Version
-1.3.1
+1.4
 
 ## Sprint and product backlog
 https://docs.google.com/spreadsheets/d/12U_DdNzxybBNd62lcBmuTMfIHWe-wBfjy8yGXYLHakU/edit?usp=sharing
