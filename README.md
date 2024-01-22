@@ -17,7 +17,7 @@ This project is built using Maven and requires both Java and Maven for setup. He
 ## Running the project
 The application can calculate the sum of a chosen parameter (specified by the `param` argument) for a room or building, as described in a JSON file. Here’s a quick guide on how to launch the application:
 
-- Launch the application using `java -jar target/BuildingInfo-1.3.jar`.
+- Launch the application using `java -jar target/BuildingInfo-1.4.0.jar`.
 - To get the sum of a chosen parameter, use the following command:
   
 ```curl -H "Content-Type: application/json" -H "Accept: application/json"  -X POST -d @src/main/resources/testGood.json "http://localhost:8080/eval?name=Lokacja+B&param=area"```
